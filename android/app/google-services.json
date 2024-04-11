@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "277449046599",
+    "project_id": "holywater-a3037",
+    "storage_bucket": "holywater-a3037.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277449046599:android:80a3aa6396e7eec1b88f62",
+        "android_client_info": {
+          "package_name": "com.kikot.holywater"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS9a4yhNnTU9ZldTFmUBoh-_xGCMGYPMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
