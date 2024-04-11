@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-native-reanimated-carousel';
-import { mockMainCarousel } from '../../mock/mockData';
+import { ICommonContent, IRomanceItem, ISeriesItem } from '../../mock/mockData';
 import { Dimensions, Image, ImageStyle, Pressable, View, ViewStyle } from 'react-native';
 import { spacing } from '../../theme/spacing';
 import { Text } from '../../components/text/Text';
@@ -10,67 +10,94 @@ import { colors } from '../../theme/colors';
 
 const { width } = Dimensions.get('screen');
 
-export const MainCarousel = () => {
+const MainCarouselItem = ({ item, onPress }: {item : (ISeriesItem | IRomanceItem), onPress: () => void}) => {
+
+    console.log('item: ', item);
+    return (
+        <Pressable
+            style={
+                ({ pressed }) => (
+                    [
+                        { transform: [{ scale: pressed ? 0.995 : 1 }] },
+                        {
+                            justifyContent: 'center',
+                            marginHorizontal: spacing[4],
+                        },
+                    ]
+                )}
+            onPress={onPress}
+        >
+            <View style={CAROUSEL_ITEM}>
+                <Image
+                    style={[IMAGE, { resizeMode: item?.imageUrl  ? 'cover' : undefined, backgroundColor: colors.background }]}
+                    source={
+                        item.imageUrl
+                    }
+                />
+                <View
+                    style={{
+                        position: 'absolute',
+                        padding: spacing[2],
+                        top: 20,
+                        left: 20,
+                        backgroundColor: colors.background,
+                        borderRadius: spacing[1],
+                    }}
+                >
+                    <Text
+                        preset='bold'
+                        text={item.type?.toUpperCase()}
+                        style={{
+                            fontSize: 11,
+                        }}
+                        numberOfLines={1} 
+                    />
+                </View>
+                <View
+                    style={{
+                        position: 'absolute',
+                        padding: spacing[3],
+                        bottom: 0,
+                        width: '100%',
+                    }}
+                >
+                    <Text
+                        preset='title'
+                        text={item.title}
+                        numberOfLines={1} 
+                    />
+                    <Text
+                        preset='subtitle'
+                        text={item.subtitle}
+                        numberOfLines={1} 
+                    />
+                </View>
+                
+            </View>
+        </Pressable>
+    );
+};
+
+export const MainCarousel = (item: ICommonContent) => {
     const isFocused = useIsFocused();
     const navigation = useNavigation();
 
-    const MainCarouselItem = ({ item, onPress }: {item : IMainCarouselItemProps, onPress: () => void}) => {
+    
 
-        console.log('item: ', item);
-        return (
-            <Pressable
-                style={
-                    ({ pressed }) => (
-                        [
-                            { transform: [{ scale: pressed ? 0.995 : 1 }] },
-                            {
-                                justifyContent: 'center',
-                                marginHorizontal: spacing[4],
-                            },
-                        ]
-                    )}
-                onPress={onPress}
-            >
-                <View style={CAROUSEL_ITEM}>
-                    <Image
-                        style={[IMAGE, { resizeMode: item?.imageUrl  ? 'stretch' : undefined, backgroundColor: colors.background }]}
-                        source={
-                            item.imageUrl
-                        }
-                    />
-                    <View
-                        style={{
-                            position: 'absolute',
-                            padding: spacing[3],
-                            bottom: 0,
-                            width: '100%',
-                        }}
-                    >
-                        <Text
-                            preset='title'
-                            text={item.title}
-                            numberOfLines={1} 
-                        />
-                        <Text
-                            preset='subtitle'
-                            text={item.subtitle}
-                            numberOfLines={1} 
-                        />
-                    </View>
-                    
-                </View>
-            </Pressable>
-        );
-    };
-
-    const handleCarouselItemPress = (item) => {
-        if (item.onlineStoreUrl) {
-            navigation.navigate('watchScreen', { link: item.link });
+    const handleCarouselItemPress = (item: (ISeriesItem | IRomanceItem)) => {
+        if (item.type === 'series') {
+            //setCurrentSeriesList in store
+            navigation.navigate('watchScreen');
+            return;
+        }
+        if (item.type === 'romance') {
+            //setCurrentRomance in store
+            navigation.navigate('readScreen');
         }
     };
     return (
         <Carousel
-            data={mockMainCarousel}
+            data={item.items}
             loop={false}
             autoPlay={isFocused}
             autoPlayInterval={5000}

@@ -3,7 +3,7 @@ import { Screen } from '../components/screen/Screen';
 import { Dimensions, FlatList, Image, ImageStyle, Pressable, ScrollView, View } from 'react-native';
 import { HEADER_HEIGHT, HomeHeader } from '../components/header/HomeHeader';
 import Carousel from 'react-native-reanimated-carousel';
-import { mockMainCarousel } from '../mock/mockData';
+import { ICommonContent, IListSection, mockMainCarousel, mockMainContent } from '../mock/mockData';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { spacing } from '../theme/spacing';
 import { colors } from '../theme/colors';
@@ -26,6 +26,13 @@ export const HomeScreen = () => {
                         paddingTop: HEADER_HEIGHT + insets.top + 12,
                     }}
                 >
+                    {
+                        mockMainContent.map((item: (ICommonContent | IListSection)) => {
+                            if (item.type === 'common') {
+                                return <MainCarousel {...item} />
+                            }
+                        })
+                    }
                     <MainCarousel />
                 </ScrollView>
             </Screen>
