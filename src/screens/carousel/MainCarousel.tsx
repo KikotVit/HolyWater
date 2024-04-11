@@ -77,7 +77,7 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
                     <Text
                         preset='title'
                         text={item.title}
-                        numberOfLines={1} 
+                        numberOfLines={2} 
                     />
                     <Text
                         preset='subtitle'
