@@ -4,6 +4,7 @@ export const icons = {
     arrowRight: require('./arrow_right.png'),
     search: require('./search.png'),
     gift: require('./gift.png'),
+    lock: require('./lock.png'),
 };
 
 export type IconTypes = keyof typeof icons;

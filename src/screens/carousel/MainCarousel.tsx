@@ -5,14 +5,26 @@ import { Dimensions, Image, ImageStyle, Pressable, View, ViewStyle } from 'react
 import { spacing } from '../../theme/spacing';
 import { Text } from '../../components/text/Text';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { IMainCarouselItemProps } from './MainCarousel.props';
 import { colors } from '../../theme/colors';
 
 const { width } = Dimensions.get('screen');
 
-const MainCarouselItem = ({ item, onPress }: {item : (ISeriesItem | IRomanceItem), onPress: () => void}) => {
+const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
 
-    console.log('item: ', item);
+    const navigation = useNavigation();
+
+    const onPress = () => {
+        if (item.type === 'series') {
+            //setCurrentSeriesList in store
+            navigation.navigate('watchScreen');
+            return;
+        }
+        if (item.type === 'romance') {
+            //setCurrentRomance in store
+            navigation.navigate('readScreen');
+            return;
+        }
+    };
     return (
         <Pressable
             style={
@@ -46,9 +58,10 @@ const MainCarouselItem = ({ item, onPress }: {item : (ISeriesItem | IRomanceItem
                 >
                     <Text
                         preset='bold'
-                        text={item.type?.toUpperCase()}
+                        text={item.type}
                         style={{
                             fontSize: 11,
+                            textTransform: 'uppercase',
                         }}
                         numberOfLines={1} 
                     />
@@ -80,25 +93,11 @@ const MainCarouselItem = ({ item, onPress }: {item : (ISeriesItem | IRomanceItem
 
 export const MainCarousel = (item: ICommonContent) => {
     const isFocused = useIsFocused();
-    const navigation = useNavigation();
-
     
-
-    const handleCarouselItemPress = (item: (ISeriesItem | IRomanceItem)) => {
-        if (item.type === 'series') {
-            //setCurrentSeriesList in store
-            navigation.navigate('watchScreen');
-            return;
-        }
-        if (item.type === 'romance') {
-            //setCurrentRomance in store
-            navigation.navigate('readScreen');
-        }
-    };
     return (
         <Carousel
             data={item.items}
-            loop={false}
+            loop
             autoPlay={isFocused}
             autoPlayInterval={5000}
             width={width}
@@ -111,8 +110,8 @@ export const MainCarousel = (item: ICommonContent) => {
             panGestureHandlerProps={{
                 activeOffsetX: [-10, 10],
             }}
-            pagingEnabled={true} // If enabled, releasing the touch will scroll to the nearest item, valid when pagingEnabled=false
-            renderItem={({ item }) => <MainCarouselItem item={item} onPress={() => handleCarouselItemPress(item)} />}
+            pagingEnabled={true}
+            renderItem={({ item }) => <MainCarouselItem item={item} />}
             style={{
                 width: width,
                 height: (width - spacing[8]) * 0.65,

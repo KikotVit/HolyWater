@@ -1,17 +1,11 @@
 import React from 'react';
 import { Screen } from '../components/screen/Screen';
-import { Dimensions, FlatList, Image, ImageStyle, Pressable, ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { HEADER_HEIGHT, HomeHeader } from '../components/header/HomeHeader';
-import Carousel from 'react-native-reanimated-carousel';
-import { ICommonContent, IListSection, mockMainCarousel, mockMainContent } from '../mock/mockData';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { spacing } from '../theme/spacing';
-import { colors } from '../theme/colors';
+import { ICommonContent, IListSection, mockMainContent } from '../mock/mockData';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text } from '../components/text/Text';
 import { MainCarousel } from './carousel/MainCarousel';
-
-const { width } = Dimensions.get('screen');
+import { MainContentListComponent } from './sections/MainContentListComponent';
 
 export const HomeScreen = () => {
 
@@ -27,13 +21,15 @@ export const HomeScreen = () => {
                     }}
                 >
                     {
-                        mockMainContent.map((item: (ICommonContent | IListSection)) => {
+                        mockMainContent.map((item: (ICommonContent | IListSection), index: number) => {
                             if (item.type === 'common') {
-                                return <MainCarousel {...item} />
+                                return <MainCarousel key={item.type + index} {...item} />;
+                            }
+                            if (item.type === 'list') {
+                                return <MainContentListComponent key={item.type + index} {...item} />;
                             }
                         })
                     }
-                    <MainCarousel />
                 </ScrollView>
             </Screen>
         </>
