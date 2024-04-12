@@ -1,7 +1,6 @@
 import React from 'react';
 import { IListSection } from '../../../mock/mockData';
-import { SectionHeader } from './SectionHeader';
-import { SectionList } from './SectionList';
+import { SectionHeader, SectionList } from '.';
 
 export const MainContentListComponent = (item: IListSection) => {
 

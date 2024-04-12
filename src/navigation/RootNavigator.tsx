@@ -5,8 +5,7 @@ import {
     createNavigationContainerRef,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../screens/home/HomeScreen';
-import { WatchScreen } from '../screens/watch-screen/WatchScreen';
+import { HomeScreen, WatchScreen } from '../screens';
 
 export type MainNavParamList = {
     home: undefined;
@@ -14,7 +13,7 @@ export type MainNavParamList = {
 };
 
 const Stack = createNativeStackNavigator<MainNavParamList>();
-export const navigation = createNavigationContainerRef<MainNavParamList>();
+export const NavigationRef = createNavigationContainerRef<MainNavParamList>();
 
 
 export const RootNavigator = React.forwardRef<
@@ -24,7 +23,7 @@ export const RootNavigator = React.forwardRef<
 
     return (
         <NavigationContainer
-            ref={navigation}
+            ref={NavigationRef}
         >
             <Stack.Navigator
                 screenOptions={{

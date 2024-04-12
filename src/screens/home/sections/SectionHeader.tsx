@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
-import { Text } from '../../../components/text/Text';
-import { spacing } from '../../../theme/spacing';
+import { Text } from '../../../components';
+import { spacing } from '../../../theme';
 
 export const SectionHeader = ({ title }: {title: string}) => {
     return (

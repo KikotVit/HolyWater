@@ -1,8 +1,7 @@
 import React from 'react';
 import { StatusBar, View } from 'react-native';
 import { ScreenProps } from 'react-native-screens';
-import { palette } from '../../theme/palette';
-import { colors } from '../../theme/colors';
+import { colors } from '../../theme';
 
 export const Screen = (props: ScreenProps) => {
 

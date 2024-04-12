@@ -2,12 +2,11 @@ import React from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { ICommonContent, IRomanceItem, ISeriesItem } from '../../../mock/mockData';
 import { Dimensions, Image, ImageStyle, View, ViewStyle } from 'react-native';
-import { spacing } from '../../../theme/spacing';
-import { Text } from '../../../components/text/Text';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { colors } from '../../../theme/colors';
+import { useIsFocused } from '@react-navigation/native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { navigation } from '../../../navigation/RootNavigator';
+import { NavigationRef } from '../../../navigation';
+import { colors, spacing } from '../../../theme';
+import { Text } from '../../../components';
 
 const { width } = Dimensions.get('screen');
 
@@ -18,13 +17,13 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
         if (item.type === 'series') {
             //setCurrentSeriesList in store
             console.log('series');
-            navigation.navigate('watchScreen');
+            NavigationRef.navigate('watchScreen');
             return;
         }
         if (item.type === 'romance') {
             //setCurrentRomance in store
             console.log('romance');
-            navigation.navigate('readScreen');
+            NavigationRef.navigate('readScreen');
             return;
         }
     };

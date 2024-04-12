@@ -2,10 +2,8 @@
 import React from 'react';
 import { ITrendingItem } from '../../../mock/mockData';
 import { FlatList, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from 'react-native';
-import { spacing } from '../../../theme/spacing';
-import { Text } from '../../../components/text/Text';
-import { Icon } from '../../../components/icon/icon';
-import { colors } from '../../../theme/colors';
+import { Icon, Text } from '../../../components';
+import { colors, spacing } from '../../../theme';
 
 const LIST_ITEM_WIDTH = 120;
 const LIST_THUMBNAIL_HEIGHT = 150;

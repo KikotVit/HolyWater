@@ -1,16 +1,11 @@
 import React from 'react';
 import { Dimensions, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Icon } from '../icon/icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text } from '../text/Text';
-import { spacing } from '../../theme/spacing';
-import { palette } from '../../theme/palette';
 import LinearGradient from 'react-native-linear-gradient';
-import { colors } from '../../theme/colors';
+import { Icon, Text } from '../../../components';
+import { HEADER_HEIGHT, colors, spacing } from '../../../theme';
 
 const { width } = Dimensions.get('window');
-
-export const HEADER_HEIGHT = 36;
 
 export const HomeHeader = () => {
 

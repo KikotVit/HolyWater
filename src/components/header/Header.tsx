@@ -1,10 +1,8 @@
 import React from 'react';
 import { Dimensions, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { IconTypes } from '../icon/icons';
-import { Icon } from '../icon/icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text } from '../text/Text';
-import { spacing } from '../../theme/spacing';
+import { Icon, IconTypes, Text } from '../';
+import { spacing } from '../../theme';
 
 export interface IHeaderItem {
     onPress: () => void,
@@ -80,12 +78,6 @@ const TITLE: TextStyle = {
     fontSize: 22,
     maxWidth: MAX_TITLE_WIDTH,
     color: 'white',
-};
-
-const ROOT: ViewStyle = {
-    paddingHorizontal: HEADER_CONTAINER_PADDING,
-    alignItems: 'center',
-    flexDirection: 'row',
 };
 
 const HEADER: ViewStyle = {   

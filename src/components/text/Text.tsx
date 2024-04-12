@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text as ReactNativeText, TextProps, TextStyle } from 'react-native';
-import { TextPresets, presets } from './text.presets';
+import { TextPresets, presets } from '.';
 
 export interface ITextProps extends TextProps {
     children?: React.ReactNode;

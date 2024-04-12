@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { View, Image, ImageStyle } from 'react-native';
-import { IIconProps } from './icon.props';
-import { icons } from './icons';
+import { IIconProps, icons } from '.';
 
-export function Icon(props: IIconProps): React.ReactElement {
+export const Icon = (props: IIconProps) =>  {
 
     const { style: styleOverride, icon, containerStyle } = props;    
     const style: ImageStyle = {
@@ -19,7 +18,7 @@ export function Icon(props: IIconProps): React.ReactElement {
             />
         </View>
     );
-}
+};
 
 const ROOT: ImageStyle = {
     resizeMode: 'contain',
