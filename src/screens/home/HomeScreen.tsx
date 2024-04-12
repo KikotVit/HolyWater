@@ -1,8 +1,8 @@
 import React from 'react';
-import { Screen } from '../components/screen/Screen';
+import { Screen } from '../../components/screen/Screen';
 import { ScrollView } from 'react-native';
-import { HEADER_HEIGHT, HomeHeader } from '../components/header/HomeHeader';
-import { ICommonContent, IListSection, mockMainContent } from '../mock/mockData';
+import { HEADER_HEIGHT, HomeHeader } from '../../components/header/HomeHeader';
+import { ICommonContent, IListSection, mockMainContent } from '../../mock/mockData';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MainCarousel } from './carousel/MainCarousel';
 import { MainContentListComponent } from './sections/MainContentListComponent';

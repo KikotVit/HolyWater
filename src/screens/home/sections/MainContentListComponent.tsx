@@ -1,5 +1,5 @@
 import React from 'react';
-import { IListSection } from '../../mock/mockData';
+import { IListSection } from '../../../mock/mockData';
 import { SectionHeader } from './SectionHeader';
 import { SectionList } from './SectionList';
 

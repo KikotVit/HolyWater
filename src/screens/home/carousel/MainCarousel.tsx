@@ -1,18 +1,18 @@
 import React from 'react';
 import Carousel from 'react-native-reanimated-carousel';
-import { ICommonContent, IRomanceItem, ISeriesItem } from '../../mock/mockData';
+import { ICommonContent, IRomanceItem, ISeriesItem } from '../../../mock/mockData';
 import { Dimensions, Image, ImageStyle, View, ViewStyle } from 'react-native';
-import { spacing } from '../../theme/spacing';
-import { Text } from '../../components/text/Text';
+import { spacing } from '../../../theme/spacing';
+import { Text } from '../../../components/text/Text';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { colors } from '../../theme/colors';
+import { colors } from '../../../theme/colors';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { navigation } from '../../../navigation/RootNavigator';
 
 const { width } = Dimensions.get('screen');
 
 const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
 
-    const navigation = useNavigation();
 
     const onPress = () => {
         if (item.type === 'series') {
