@@ -1,11 +1,12 @@
 import React from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { ICommonContent, IRomanceItem, ISeriesItem } from '../../mock/mockData';
-import { Dimensions, Image, ImageStyle, Pressable, View, ViewStyle } from 'react-native';
+import { Dimensions, Image, ImageStyle, View, ViewStyle } from 'react-native';
 import { spacing } from '../../theme/spacing';
 import { Text } from '../../components/text/Text';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('screen');
 
@@ -16,27 +17,23 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
     const onPress = () => {
         if (item.type === 'series') {
             //setCurrentSeriesList in store
+            console.log('series');
             navigation.navigate('watchScreen');
             return;
         }
         if (item.type === 'romance') {
             //setCurrentRomance in store
+            console.log('romance');
             navigation.navigate('readScreen');
             return;
         }
     };
     return (
-        <Pressable
-            style={
-                ({ pressed }) => (
-                    [
-                        { transform: [{ scale: pressed ? 0.995 : 1 }] },
-                        {
-                            justifyContent: 'center',
-                            marginHorizontal: spacing[4],
-                        },
-                    ]
-                )}
+        <TouchableWithoutFeedback
+            style={{
+                justifyContent: 'center',
+                marginHorizontal: spacing[4],
+            }}
             onPress={onPress}
         >
             <View style={CAROUSEL_ITEM}>
@@ -87,7 +84,7 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
                 </View>
                 
             </View>
-        </Pressable>
+        </TouchableWithoutFeedback>
     );
 };
 
