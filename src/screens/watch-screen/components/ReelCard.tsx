@@ -14,7 +14,6 @@ import { IEpisode } from '../../../mock/mockData';
 const { height, width } = Dimensions.get('window');
 
 interface IReelCardProps extends IEpisode {
-    _id: string | number,
     ViewableItem: string | number,
     index: number,
     onFinishPlaying: (index: number) => void,
