@@ -5,6 +5,8 @@ export const icons = {
     search: require('./search.png'),
     gift: require('./gift.png'),
     lock: require('./lock.png'),
+    play: require('./play.png'),
+    pause: require('./pause.png'),
 };
 
 export type IconTypes = keyof typeof icons;

@@ -2,7 +2,8 @@ import React from 'react';
 import { Dimensions, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon, IconTypes, Text } from '../';
-import { spacing } from '../../theme';
+import { colors, spacing } from '../../theme';
+import LinearGradient from 'react-native-linear-gradient';
 
 export interface IHeaderItem {
     onPress: () => void,
@@ -37,7 +38,21 @@ export const Header = (props: IHeaderProps) => {
     const insets = useSafeAreaInsets();
     
     return (
-        <View style={[{ backgroundColor: 'red', paddingBottom: 10, paddingTop: insets.top }, styleOverride ]}>
+        <LinearGradient
+            start={{ x: 0.5, y: 0.7 }}
+            end={{ x: 0.5, y: 1 }}
+            locations={[0, 1]}
+            colors={colors.headerGradient}
+            style={{
+                zIndex: 999,
+                width: '100%',
+                position: 'absolute',
+                justifyContent: 'center',
+                paddingBottom: 30,
+                paddingTop: insets.top,
+                paddingHorizontal: spacing[4],
+            }}
+        >
             <View style={[HEADER]}>
                 {
                     leftIcon ? 
@@ -65,7 +80,8 @@ export const Header = (props: IHeaderProps) => {
                         <View style={RIGHT} />
                 }
             </View>
-        </View>
+        
+        </LinearGradient>
     );
 };
 

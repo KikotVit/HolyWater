@@ -3,7 +3,8 @@ import { ScrollView } from 'react-native';
 import { ICommonContent, IListSection, mockMainContent } from '../../mock/mockData';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Screen } from '../../components';
-import { MainContentListComponent, MainCarousel, HomeHeader, HEADER_HEIGHT } from '.';
+import { MainContentListComponent, MainCarousel, HomeHeader } from '.';
+import { HEADER_HEIGHT } from '../../theme';
 
 export const HomeScreen = () => {
 
@@ -15,7 +16,9 @@ export const HomeScreen = () => {
                 <HomeHeader />
                 <ScrollView
                     style={{
-                        paddingTop: HEADER_HEIGHT + insets.top + 12,
+                        marginTop: HEADER_HEIGHT + insets.top + 12,
+                        paddingBottom: insets.bottom,
+                        height: '100%'
                     }}
                 >
                     {
