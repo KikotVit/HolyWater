@@ -16,6 +16,8 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     currentSeriesItem: undefined,
     lastViewed: undefined,
     currentHeaderTitle: undefined,
+    currentProgress: 0,
+    currentDuration: 0,
     isNeedContinue: false,
     setIsNeedContinue: (isNeed) => set((state) => {
         state.isNeedContinue = isNeed;
@@ -41,8 +43,14 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
             state.mainContent = mainContent;
         });
     },
-    setCurrentHeaderTitle: (title: string) => set((state) => {
+    setCurrentHeaderTitle: (title) => set((state) => {
         state.currentHeaderTitle = title;
+    }),
+    setCurrentProgress: (progress) => set((state) => {
+        state.currentProgress = progress;
+    }),
+    setCurrentDuration: (duration) => set((state) => {
+        state.currentDuration = duration;
     }),
     setCurrentSeriesList: (series?: ISeriesItem) => set((state) => {
         state.currentSeriesItem = series;

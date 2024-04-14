@@ -51,8 +51,12 @@ export interface IRootStore {
     mainContent: (ICommonContent | IListSection | ILastViewed)[];
     currentSeriesItem?: ISeriesItem;
     currentHeaderTitle?: string;
+    currentProgress: number;
+    currentDuration: number;
     lastViewed?: ILastViewed;
     isNeedContinue: boolean,
+    setCurrentProgress: (progress: number) => void,
+    setCurrentDuration: (duration: number) => void,
     setCurrentHeaderTitle: (title: string) => void,
     setIsNeedContinue: (isNeed: boolean) => void,
     loadConfig: () => Promise<void>;
