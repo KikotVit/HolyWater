@@ -1,22 +1,23 @@
 import React from 'react';
 import Carousel from 'react-native-reanimated-carousel';
-import { ICommonContent, IRomanceItem, ISeriesItem } from '../../../mock/mockData';
 import { Dimensions, Image, ImageStyle, View, ViewStyle } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { NavigationRef } from '../../../navigation';
 import { colors, spacing } from '../../../theme';
 import { Text } from '../../../components';
+import { useRootStore } from '../../../stores';
+import { IRomanceItem, ISeriesItem } from '../../../stores/root.store.types';
 
 const { width } = Dimensions.get('screen');
 
 const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
 
+    const [setCurrentSeriesList] = useRootStore(state => [state.setCurrentSeriesList]);
 
     const onPress = () => {
         if (item.type === 'series') {
-            //setCurrentSeriesList in store
-            console.log('series');
+            setCurrentSeriesList(item);
             NavigationRef.navigate('watchScreen');
             return;
         }
