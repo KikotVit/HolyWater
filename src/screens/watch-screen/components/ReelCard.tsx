@@ -1,13 +1,15 @@
 // packages Imports
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Dimensions, Pressable } from 'react-native';
+import { View, Dimensions, Pressable, Platform } from 'react-native';
 import Slider from '@react-native-community/slider';
 import Video from 'react-native-video';
 import { GetDurationFormat } from '../utils';
-import { colors, spacing } from '../../../theme';
+import { HEADER_HEIGHT, colors, spacing } from '../../../theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon, Text } from '../../../components';
 import { IEpisode } from '../../../mock/mockData';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Screen } from 'react-native-screens';
 
 
 // Screen Dimensions
@@ -21,6 +23,8 @@ interface IReelCardProps extends IEpisode {
 
 export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCardProps ) => {
 
+    const insets = useSafeAreaInsets();
+
     const VideoPlayer = useRef(null);
 
     const [Progress, SetProgress] = useState(0);
@@ -33,6 +37,9 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
             SetPaused(true);
             SetProgress(0);
         }
+        return () => {
+            if (ViewableItem === link) SetPaused(true);
+        };
     }, [ViewableItem]);
 
     const SeekUpdate = useCallback(
@@ -75,10 +82,11 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
         () => (
             <LinearGradient
                 start={{ x: 0.5, y: 0 }}
-                end={{ x: 0.5, y: 0.3 }}
+                end={{ x: 0.5, y: 0.8 }}
                 locations={[0, 1]}
                 colors={colors.footerGradient}
                 style={{
+                    // TODO make const
                     zIndex: 999,
                     width: width,
                     height: 90,
@@ -86,13 +94,14 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
                     flexDirection: 'column',
                     justifyContent: 'center',
                     bottom: 0,
-                    paddingBottom: 30,
+                    paddingBottom: HEADER_HEIGHT,
                     paddingTop: 30,
                     paddingHorizontal: spacing[4],
                 }}
             >
                 <View
                     style={{
+                        // TODO make const
                         justifyContent: 'center',
                         flexDirection: 'row', 
                         width: '100%',
@@ -114,6 +123,7 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
                         style={{
                             width: width - spacing[4] * 2 - 28, // icon width
                             paddingTop: 20,
+                            paddingHorizontal: Platform.OS === 'ios' ? spacing[4] : 0,
                         }}>
                         <Slider
                             style={{
@@ -132,7 +142,7 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
-                                paddingHorizontal: spacing[4],
+                                paddingHorizontal:  Platform.OS === 'ios' ? 0 : spacing[4],
                             }}
                         >
                             <Text
@@ -165,42 +175,38 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
     );
 
     return (
-        <>
-            
-        
-            <View
+        <Screen
+            style={{
+                backgroundColor: colors.background,
+                width: width,
+                height: Platform.OS === 'ios' ? height - insets.bottom : height,
+                marginTop: Platform.OS === 'ios' ? 0 : 24,
+                justifyContent: 'center',
+            }}
+        >
+            <Video
+                ref={VideoPlayer}
+                source={{ uri: link }}
                 style={{
-                    backgroundColor: colors.background,
-                    width: width,
-                    height: height,
-                    marginTop: 24,
-                    justifyContent: 'center',
+                    width: '100%',
+                    height: '100%',
                 }}
-            >
-                <Video
-                    ref={VideoPlayer}
-                    source={{ uri: link }}
-                    style={{
-                        width: width,
-                        height: height,
-                    }}
-                    resizeMode='cover'
-                    onError={videoError}
-                    playInBackground={true}
-                    progressUpdateInterval={100}
-                    paused={Paused}
-                    muted={false}
-                    repeat={false}
-                    onLoad={onLoadComplete}
-                    onProgress={playbackStatusUpdate}
-                    onEnd={() => {
-                        console.log('end');
-                        onFinishPlaying(index);
-                    }}
-                />
+                resizeMode='cover'
+                onError={videoError}
+                playInBackground={true}
+                progressUpdateInterval={100}
+                paused={Paused}
+                muted={false}
+                repeat={false}
+                onLoad={onLoadComplete}
+                onProgress={playbackStatusUpdate}
+                onEnd={() => {
+                    console.log('end');
+                    onFinishPlaying(index);
+                }}
+            />
 
-                {GetSlider}
-            </View>
-        </>
+            {GetSlider}
+        </Screen>
     );
 };

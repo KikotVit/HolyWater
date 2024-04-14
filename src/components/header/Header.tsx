@@ -39,7 +39,7 @@ export const Header = (props: IHeaderProps) => {
     
     return (
         <LinearGradient
-            start={{ x: 0.5, y: 0.7 }}
+            start={{ x: 0.5, y: 0.6 }}
             end={{ x: 0.5, y: 1 }}
             locations={[0, 1]}
             colors={colors.headerGradient}

@@ -9,9 +9,11 @@ export const Screen = (props: ScreenProps) => {
     return (
         <View style={{ flex: 1, backgroundColor: colors.background, paddingBottom: insets.bottom }}>
             <StatusBar
+                // translucent
                 animated={false}
                 barStyle={'light-content'}
-                showHideTransition={'none'}
+                // hidden
+                // showHideTransition={'none'}
             />
             <View
                 style={{ 
