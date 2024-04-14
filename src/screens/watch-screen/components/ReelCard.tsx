@@ -7,9 +7,10 @@ import { GetDurationFormat } from '../utils';
 import { HEADER_HEIGHT, colors, spacing } from '../../../theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon, Text } from '../../../components';
-import { IEpisode } from '../../../mock/mockData';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Screen } from 'react-native-screens';
+import { IEpisode } from '../../../stores/root.store.types';
+import { useRootStore } from '../../../stores';
 
 
 // Screen Dimensions
@@ -21,25 +22,38 @@ interface IReelCardProps extends IEpisode {
     onFinishPlaying: (index: number) => void,
 }
 
-export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCardProps ) => {
+export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying }: IReelCardProps ) => {
+
+    const [
+        lastViewed,
+        isNeedContinue,
+        setIsNeedContinue,
+        updateLastViewed,
+        setCurrentHeaderTitle,
+    ] = useRootStore(state => [
+        state.lastViewed,
+        state.isNeedContinue,
+        state.setIsNeedContinue,
+        state.updateLastViewed,
+        state.setCurrentHeaderTitle,
+    ]);
 
     const insets = useSafeAreaInsets();
 
     const VideoPlayer = useRef(null);
-
-    const [Progress, SetProgress] = useState(0);
+    const [Progress, SetProgress] = useState(isNeedContinue ? lastViewed?.progress : 0);
     const [Duration, SetDuration] = useState(0);
     const [Paused, SetPaused] = useState(false);
-
+    
     useEffect(() => {
-        if (ViewableItem === link) SetPaused(false);
+        if (ViewableItem === id) {
+            SetPaused(false);
+            updateLastViewed({ activeIndex: index });
+            setCurrentHeaderTitle(title);
+        }
         else {
             SetPaused(true);
-            SetProgress(0);
         }
-        return () => {
-            if (ViewableItem === link) SetPaused(true);
-        };
     }, [ViewableItem]);
 
     const SeekUpdate = useCallback(
@@ -59,7 +73,11 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
             const currentTime = Math.round(playbackStatus.currentTime);
             const duration = Math.round(playbackStatus.seekableDuration);
             if (currentTime)
-                if (duration) SetProgress((currentTime / duration) * 100);
+                if (duration) {
+                    const progress = (currentTime / duration) * 100;
+                    SetProgress(progress);
+                    updateLastViewed({ progress });
+                }
         } catch (error) {
             console.error('playbackStatusUpdate error: ', error);
         }
@@ -68,6 +86,14 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
     const onLoadComplete = event => {
         try {
             SetDuration(event.duration * 1000);
+            // if continue watching
+            if (ViewableItem === id && isNeedContinue) {
+                VideoPlayer.current.seek((lastViewed?.progress * event.duration) / 100);
+                setIsNeedContinue(false);
+            } else {
+                VideoPlayer.current.seek((0 * event.duration) / 100);
+            }
+            
         } catch (error) {
             console.error('onLoadComplete error: ', error);
         }
@@ -193,7 +219,7 @@ export const ReelCard = ({ link, ViewableItem, index, onFinishPlaying }: IReelCa
                 }}
                 resizeMode='cover'
                 onError={videoError}
-                playInBackground={true}
+                playInBackground={false}
                 progressUpdateInterval={100}
                 paused={Paused}
                 muted={false}

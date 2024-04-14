@@ -5,4 +5,5 @@ export const colors = {
     text: '#F2F3F5',
     subtitle: '#C4C8CC',
     comingDate: '#00BFE5',
+    continueContainer: '#3598D0',
 };

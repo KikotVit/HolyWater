@@ -42,7 +42,6 @@ export const HomeHeader = () => {
                     style={ICONS_CONTAINER}
                 >
                     <TouchableOpacity
-                        // style={ICON_CONTAINER}
                         onPress={onGiftPress}
                     >
                         <Icon
@@ -54,7 +53,6 @@ export const HomeHeader = () => {
                             icon={'gift'} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        // style={ICON_CONTAINER}
                         onPress={onSearchPress}
                     >
                         <Icon

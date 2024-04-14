@@ -7,6 +7,7 @@ export const icons = {
     lock: require('./lock.png'),
     play: require('./play.png'),
     pause: require('./pause.png'),
+    angleRight: require('./angle_right.png'),
 };
 
 export type IconTypes = keyof typeof icons;

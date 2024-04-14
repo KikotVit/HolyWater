@@ -2,9 +2,10 @@ import React from 'react';
 import { Dimensions, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Screen, Text } from '../../components';
-import { MainContentListComponent, MainCarousel, HomeHeader } from '.';
+import { MainContentListContainer, MainCarousel, HomeHeader, LastViewedContainer } from '.';
 import { HEADER_HEIGHT } from '../../theme';
 import { useRootStore } from '../../stores';
+import { ICommonContent, ILastViewed, IListSection } from '../../stores/root.store.types';
 
 const { height } = Dimensions.get('window');
 
@@ -26,12 +27,15 @@ export const HomeScreen = () => {
                 }}
             >
                 {
-                    mainContent.length ? mainContent.map((item: (ICommonContent | IListSection), index: number) => {
+                    mainContent.length ? mainContent.map((item: (ICommonContent | IListSection | ILastViewed), index: number) => {
                         if (item.type === 'common') {
                             return <MainCarousel key={item.type + index} {...item} />;
                         }
                         if (item.type === 'list') {
-                            return <MainContentListComponent key={item.type + index} {...item} />;
+                            return <MainContentListContainer key={item.type + index} {...item} />;
+                        }
+                        if (item.type === 'lastViewed') {
+                            return <LastViewedContainer key={item.type + index} {...item.item} />;
                         }
                     }) : (
                         <Text text={'No content'} />

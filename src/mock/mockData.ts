@@ -1,5 +1,4 @@
-import { ICommonContent, IListSection } from "../stores/root.store.types";
-
+import { ICommonContent, IListSection } from '../stores/root.store.types';
 
 export const mockMainContent: (ICommonContent | IListSection)[] = [
     {
@@ -12,34 +11,42 @@ export const mockMainContent: (ICommonContent | IListSection)[] = [
                 imageUrl: require('./images/mainBanner.png'),
                 episodes: [
                     {
+                        id: '1',
                         title: 'Episode 1',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/convertedwife.m3u8',
                     },
                     {
+                        id: '2',
                         title: 'Episode 2',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/2wife2.m3u8',
                     },
                     {
+                        id: '3',
                         title: 'Episode 3',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/3wife3.m3u8',
                     },
                     {
+                        id: '4',
                         title: 'Episode 4',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/4wife4.m3u8',
                     },
                     {
+                        id: '5',
                         title: 'Episode 5',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/5wife5.m3u8',
                     },
                     {
+                        id: '6',
                         title: 'Episode 6',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/6wife6.m3u8',
                     },
                     {
+                        id: '7',
                         title: 'Episode 7',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/7wife7.m3u8',
                     },
                     {
+                        id: '8',
                         title: 'Episode 8',
                         link: 'https://dj0vkl2i4vsbo.cloudfront.net/convert/wife_caught_husband/converted/8wife8.m3u8',
                     },

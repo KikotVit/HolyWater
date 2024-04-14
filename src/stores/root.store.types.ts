@@ -1,4 +1,5 @@
 export interface IEpisode {
+    id: string,
     title: string;
     link: string;
 }
@@ -38,12 +39,24 @@ export interface ICommonContent {
     items: (ISeriesItem | IRomanceItem)[];
 }
 
+export interface ILastViewed {
+    type: 'lastViewed';
+    item: ISeriesItem | IRomanceItem;
+    activeIndex: number;
+    progress: number; 
+}
+
 export interface IRootStore {
-    mainContent: (ICommonContent | IListSection)[];
+    isHydrated: boolean;
+    mainContent: (ICommonContent | IListSection | ILastViewed)[];
     currentSeriesItem?: ISeriesItem;
-    lastContent?: IEpisode;
-    currentProgress?: number,
-    lastProgress?: number,
+    currentHeaderTitle?: string;
+    lastViewed?: ILastViewed;
+    isNeedContinue: boolean,
+    setCurrentHeaderTitle: (title: string) => void,
+    setIsNeedContinue: (isNeed: boolean) => void,
     loadConfig: () => Promise<void>;
     setCurrentSeriesList: (list?: ISeriesItem) => void;
+    updateLastViewed: (args: {progress?: number, activeIndex?: number}) => void;
+    setLastViewed: (args: ILastViewed) => void;
 }

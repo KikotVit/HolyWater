@@ -13,11 +13,12 @@ const { width } = Dimensions.get('screen');
 
 const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
 
-    const [setCurrentSeriesList] = useRootStore(state => [state.setCurrentSeriesList]);
+    const [setCurrentSeriesList, setIsNeedContinue] = useRootStore(state => [state.setCurrentSeriesList, state.setIsNeedContinue]);
 
     const onPress = () => {
         if (item.type === 'series') {
             setCurrentSeriesList(item);
+            // setIsNeedContinue(true);
             NavigationRef.navigate('watchScreen');
             return;
         }

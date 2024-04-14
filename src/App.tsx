@@ -6,19 +6,23 @@ import { useRootStore } from './stores';
 
 function App(): React.JSX.Element {
 
-    const [loadConfig] = useRootStore(state => [state.loadConfig]);
+    const [loadConfig, isHydrated] = useRootStore(state => [state.loadConfig, state.isHydrated]);
+
     useEffect(() => {
-        (async() => await loadConfig())();
-    }, []);
+        if (isHydrated) {
+            (async() => await loadConfig())();
+        }
+    }, [isHydrated]);
     
 
     const navigationRef = useRef<NavigationContainerRef<MainNavParamList>>(null);
 
-    return (
+    return isHydrated ? (
+
         <RootNavigator
             ref={navigationRef}
         />
-    );
+    ) : null;
 }
 
 export default App;

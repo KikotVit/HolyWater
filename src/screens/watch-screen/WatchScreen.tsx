@@ -6,7 +6,7 @@ import { useRootStore } from '../../stores';
 
 export const WatchScreen = () => {
 
-    const [currentSeriesItem, setCurrentSeriesList] = useRootStore(state => [state.currentSeriesItem, state.setCurrentSeriesList]);
+    const [setCurrentSeriesList, currentHeaderTitle] = useRootStore(state => [state.setCurrentSeriesList, state.currentHeaderTitle]);
 
     const onLeftPress = () => {
         setCurrentSeriesList();
@@ -15,8 +15,8 @@ export const WatchScreen = () => {
     
     return (
         <Screen >
-            <Header leftIcon='arrowLeft' title={'episodes'} onLeftPress={onLeftPress}/>
-            <Reels videos={currentSeriesItem.episodes} />
+            <Header leftIcon='arrowLeft' title={currentHeaderTitle} onLeftPress={onLeftPress}/>
+            <Reels />
         </Screen>
     );
 };
