@@ -55,10 +55,14 @@ export interface IRootStore {
     currentDuration: number;
     lastViewed?: ILastViewed;
     isNeedContinue: boolean,
+    isPaused: boolean,
+    seekValue: number,
     setCurrentProgress: (progress: number) => void,
     setCurrentDuration: (duration: number) => void,
+    setSeekValue: (duration: number) => void,
     setCurrentHeaderTitle: (title: string) => void,
     setIsNeedContinue: (isNeed: boolean) => void,
+    setIsPaused: (paused: boolean) => void,
     loadConfig: () => Promise<void>;
     setCurrentSeriesList: (list?: ISeriesItem) => void;
     updateLastViewed: (args: {progress?: number, activeIndex?: number}) => void;

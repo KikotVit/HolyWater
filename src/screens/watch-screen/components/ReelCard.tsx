@@ -30,18 +30,27 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
         setIsNeedContinue,
         updateLastViewed,
         setCurrentHeaderTitle,
+        setCurrentProgress,
+        setCurrentDuration,
+        setIsPaused,
+        isPaused,
+        seekValue,
     ] = useRootStore(state => [
         state.lastViewed,
         state.isNeedContinue,
         state.setIsNeedContinue,
         state.updateLastViewed,
         state.setCurrentHeaderTitle,
+        state.setCurrentProgress,
+        state.setCurrentDuration,
+        state.setIsPaused,
+        state.isPaused,
+        state.seekValue,
     ]);
 
     const insets = useSafeAreaInsets();
 
     const VideoPlayer = useRef(null);
-    const [Progress, SetProgress] = useState(isNeedContinue ? lastViewed?.progress : 0);
     const [Duration, SetDuration] = useState(0);
     const [Paused, SetPaused] = useState(false);
     
@@ -49,24 +58,34 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
         if (ViewableItem === id) {
             SetPaused(false);
             updateLastViewed({ activeIndex: index });
+            setCurrentDuration(Duration);
             setCurrentHeaderTitle(title);
         }
         else {
+            setCurrentDuration(Duration);
             SetPaused(true);
         }
     }, [ViewableItem]);
 
-    const SeekUpdate = useCallback(
-        async seekTime => {
+    useEffect(() => {
+        if (ViewableItem === id) {
+            setIsPaused(Paused);
+        }
+    }, [Paused]);
+
+    useEffect(() => {
+        if (ViewableItem === id) {
             try {
                 if (VideoPlayer.current)
-                    VideoPlayer.current.seek((seekTime * Duration) / 100 / 1000);
+                    VideoPlayer.current.seek((seekValue * Duration) / 100 / 1000);
             } catch (error) {
                 console.error('playbackStatusUpdate error: ', error);
             }
-        },
-        [Duration],
-    );
+        }
+        
+    }, [seekValue]);
+    
+    
 
     const playbackStatusUpdate = playbackStatus => {
         try {
@@ -75,7 +94,7 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
             if (currentTime)
                 if (duration) {
                     const progress = (currentTime / duration) * 100;
-                    SetProgress(progress);
+                    setCurrentProgress(progress);
                     updateLastViewed({ progress });
                 }
         } catch (error) {
@@ -86,12 +105,14 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
     const onLoadComplete = event => {
         try {
             SetDuration(event.duration * 1000);
-            // if continue watching
-            if (ViewableItem === id && isNeedContinue) {
-                VideoPlayer.current.seek((lastViewed?.progress * event.duration) / 100);
-                setIsNeedContinue(false);
-            } else {
-                VideoPlayer.current.seek((0 * event.duration) / 100);
+            
+            if (ViewableItem === id) {
+                setCurrentDuration(event.duration * 1000);
+                // if continue watching
+                if (isNeedContinue && lastViewed) {
+                    VideoPlayer.current.seek((lastViewed.progress * event.duration) / 100);
+                    setIsNeedContinue(false);
+                }
             }
             
         } catch (error) {
@@ -103,102 +124,6 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
         console.log('onError videoError: ', error);
 
     };
-
-    const GetSlider = useMemo(
-        () => (
-            <LinearGradient
-                start={{ x: 0.5, y: 0 }}
-                end={{ x: 0.5, y: 0.8 }}
-                locations={[0, 1]}
-                colors={colors.footerGradient}
-                style={{
-                    // TODO make const
-                    zIndex: 999,
-                    width: width,
-                    height: 90,
-                    position: 'absolute',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    bottom: 0,
-                    paddingBottom: HEADER_HEIGHT,
-                    paddingTop: 30,
-                    paddingHorizontal: spacing[4],
-                }}
-            >
-                <View
-                    style={{
-                        // TODO make const
-                        justifyContent: 'center',
-                        flexDirection: 'row', 
-                        width: '100%',
-                        height: 60,
-                        alignSelf: 'flex-start',
-                        alignItems: 'center',
-                    }} >
-                    <Pressable
-                        onPress={() => SetPaused(prev => !prev)}
-                    >
-                        <Icon
-                            icon={Paused ? 'play' : 'pause'} 
-                            containerStyle={{
-                                justifyContent: 'center',
-                            }}
-                        />
-                    </Pressable>
-                    <View 
-                        style={{
-                            width: width - spacing[4] * 2 - 28, // icon width
-                            paddingTop: 20,
-                            paddingHorizontal: Platform.OS === 'ios' ? spacing[4] : 0,
-                        }}>
-                        <Slider
-                            style={{
-                                width: '100%',
-                                height: 10,
-                            }}
-                            minimumValue={0}
-                            maximumValue={100}
-                            minimumTrackTintColor={colors.text}
-                            maximumTrackTintColor={colors.text}
-                            thumbTintColor={colors.text}
-                            value={Progress}
-                            onSlidingComplete={data => SeekUpdate(data)}
-                        />
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingHorizontal:  Platform.OS === 'ios' ? 0 : spacing[4],
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    color: colors.subtitle,
-                                }}
-                            >
-                                {GetDurationFormat(Math.floor((Progress * Duration) / 100))}
-                            </Text>
-                
-                            <Text
-                                style={{
-                                    color: colors.subtitle,
-                                }}
-                            >
-                                {GetDurationFormat(Duration || 0)}
-                            </Text>
-                        </View>
-                       
-                    </View>
-                    
-                </View>
-            </LinearGradient>
-        ),
-        [
-            Paused,
-            Duration,
-            Progress,
-        ],
-    );
 
     return (
         <Screen
@@ -221,9 +146,9 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
                 onError={videoError}
                 playInBackground={false}
                 progressUpdateInterval={100}
-                paused={Paused}
+                paused={ViewableItem === id ? isPaused : true}
                 muted={false}
-                repeat={false}
+                repeat={true}
                 onLoad={onLoadComplete}
                 onProgress={playbackStatusUpdate}
                 onEnd={() => {
@@ -232,7 +157,7 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
                 }}
             />
 
-            {GetSlider}
+            {/* {GetSlider} */}
         </Screen>
     );
 };

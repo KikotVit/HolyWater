@@ -17,10 +17,15 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     lastViewed: undefined,
     currentHeaderTitle: undefined,
     currentProgress: 0,
+    seekValue: 0,
     currentDuration: 0,
     isNeedContinue: false,
+    isPaused: false,
     setIsNeedContinue: (isNeed) => set((state) => {
         state.isNeedContinue = isNeed;
+    }),
+    setIsPaused: (paused) => set((state) => {
+        state.isPaused = paused;
     }),
     loadConfig: async () => {
         console.log('loadConfig');
@@ -51,6 +56,9 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     }),
     setCurrentDuration: (duration) => set((state) => {
         state.currentDuration = duration;
+    }),
+    setSeekValue: (value) => set((state) => {
+        state.seekValue = value;
     }),
     setCurrentSeriesList: (series?: ISeriesItem) => set((state) => {
         state.currentSeriesItem = series;

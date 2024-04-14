@@ -6,6 +6,7 @@ import { colors, spacing } from '../../../theme';
 import { Icon, Text } from '../../../components';
 import { useRootStore } from '../../../stores';
 import { NavigationRef } from '../../../navigation';
+import { GetDurationFormat } from '../../watch-screen';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -37,7 +38,13 @@ export const LastViewedContainer = () => {
             NavigationRef.navigate('readScreen');
             return;
         }
-    }
+    };
+
+    const getSubtitle= () => {
+        return lastViewed.item.type === 'series' 
+            ? lastViewed.item.episodes[lastViewed.activeIndex].title
+            : '';
+    };
 
     return (
         <>
@@ -68,7 +75,7 @@ export const LastViewedContainer = () => {
                             text={lastViewed.item.title}
                         />
                         <Text
-                            text={lastViewed.item.type === 'series' ? lastViewed.item.episodes[lastViewed.activeIndex].title : ''}
+                            text={getSubtitle()}
                         />
                     </View>
                     <Icon

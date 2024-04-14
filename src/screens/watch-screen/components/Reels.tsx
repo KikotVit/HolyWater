@@ -14,17 +14,19 @@ export const Reels = () => {
         setLastViewed,
         lastViewed,
         isNeedContinue,
+        setCurrentProgress,
     ] = useRootStore(state => [
         state.currentSeriesItem,
         state.setLastViewed,
         state.lastViewed,
         state.isNeedContinue,
+        state.setCurrentProgress,
     ]);
 
     const insets = useSafeAreaInsets();
 
     const FlatlistRef = useRef<FlatList>(null);
-    const [ViewableItem, SetViewableItem] = useState('');
+    const [viewableItem, setViewableItem] = useState('');
     const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 70 });
 
     useEffect(() => {
@@ -45,11 +47,12 @@ export const Reels = () => {
         }
     }, []);
     
-
     // Viewable configuration
     const onViewRef = useRef(viewableItems => {
-        if (viewableItems?.viewableItems?.length > 0)
-            SetViewableItem(viewableItems.viewableItems[0].item.id);
+        if (viewableItems?.viewableItems?.length > 0) {
+            setViewableItem(viewableItems.viewableItems[0].item.id);
+            setCurrentProgress(0);
+        }
     });
 
     return (
@@ -64,7 +67,7 @@ export const Reels = () => {
                 <ReelCard
                     {...item}
                     index={index}
-                    ViewableItem={ViewableItem}
+                    ViewableItem={viewableItem}
                     onFinishPlaying={index => {
                         console.log('index: onFinishPlaying', index);
                         if (index !== currentSeriesItem?.episodes?.length - 1 && FlatlistRef.current) {

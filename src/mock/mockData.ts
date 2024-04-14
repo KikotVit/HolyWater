@@ -6,7 +6,7 @@ export const mockMainContent: (ICommonContent | IListSection)[] = [
         items: [
             { 
                 type: 'series',
-                title: 'Lethal Limits',
+                title: 'Tap here to watch series',
                 subtitle: 'Dustin\'s Gamble',
                 imageUrl: require('./images/mainBanner.png'),
                 episodes: [
@@ -54,15 +54,15 @@ export const mockMainContent: (ICommonContent | IListSection)[] = [
             },
             {
                 type: 'romance',
-                title: 'Another poster',
+                title: 'Read book',
                 subtitle: 'Another subtitle',
                 imageUrl: require('./images/mainBanner2.jpeg'),
                 text: '',
             },
             {
                 type: 'romance',
-                title: 'Longer-longer-longer poster title',
-                subtitle: 'Longer-longer poster subtitle',
+                title: 'Long-long-long-long-long-long-long poster title',
+                subtitle: 'Long-long-long-long-long poster subtitle',
                 imageUrl: require('./images/mainBanner3.jpeg'),
                 text: '',
             },
