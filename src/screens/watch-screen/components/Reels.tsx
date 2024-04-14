@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, Platform } from 'react-native';
 import { colors } from '../../../theme';
-import { ReelCard } from './ReelCard';
+import { ReelCard } from './';
 import { useRootStore } from '../../../stores';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

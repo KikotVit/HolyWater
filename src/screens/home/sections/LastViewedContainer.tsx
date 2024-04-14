@@ -1,12 +1,10 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
-import { ILastViewed, IRomanceItem, ISeriesItem } from '../../../stores/root.store.types';
 import { Dimensions, Image, ImageStyle, Pressable, View, ViewStyle } from 'react-native';
 import { colors, spacing } from '../../../theme';
 import { Icon, Text } from '../../../components';
 import { useRootStore } from '../../../stores';
 import { NavigationRef } from '../../../navigation';
-import { GetDurationFormat } from '../../watch-screen';
 
 const { width, height } = Dimensions.get('screen');
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    NavigationContainerRef,
     NavigationContainer,
     createNavigationContainerRef,
 } from '@react-navigation/native';
@@ -10,16 +9,14 @@ import { HomeScreen, WatchScreen } from '../screens';
 export type MainNavParamList = {
     home: undefined;
     watchScreen: undefined;
+    readScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainNavParamList>();
 export const NavigationRef = createNavigationContainerRef<MainNavParamList>();
 
 
-export const RootNavigator = React.forwardRef<
-    NavigationContainerRef<MainNavParamList>,
-    Partial<React.ComponentProps<typeof NavigationContainer>>
->((props, ref) => {
+export const RootNavigator = (() => {
 
     return (
         <NavigationContainer
@@ -34,10 +31,9 @@ export const RootNavigator = React.forwardRef<
                 initialRouteName='home'
             >
                 <Stack.Screen name='home' component={HomeScreen} options={{ animation: 'slide_from_left' }} />
-                <Stack.Screen name='watchScreen' component={WatchScreen} options={{ animation: 'slide_from_left' }} />
+                <Stack.Screen name='watchScreen' component={WatchScreen} options={{ animation: 'slide_from_right' }} />
+                {/* <Stack.Screen name='readScreen' component={ReadScreen} options={{ animation: 'slide_from_right' }} /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
 });
-
-RootNavigator.displayName = 'RootNavigator';
