@@ -4,7 +4,7 @@ import { NavigationRef } from '../../navigation';
 import { useRootStore } from '../../stores';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HEADER_HEIGHT, colors, spacing } from '../../theme';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from 'react-native';
 
 const { height } = Dimensions.get('window');
 
@@ -39,7 +39,6 @@ export const ReadScreen = () => {
                 type: 'lastViewed',
             });
         }
-        console.log('isNeedContinue: ', isNeedContinue);
         if (isNeedContinue && scrollViewRef.current && lastViewed?.progress) {
             scrollViewRef.current.scrollTo({ y: lastViewed.progress ?? 0, animated: false });
             setIsNeedContinue(false);
@@ -47,15 +46,13 @@ export const ReadScreen = () => {
         
         
     }, []);
-    
-    console.log('lastViewed?.progress: ', lastViewed?.progress);
 
     const onLeftPress = () => {
         setCurrentRomanceItem();
         NavigationRef.goBack();
     };
 
-    const handleScroll = (event) => {
+    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         const offsetY = Math.round(event.nativeEvent.contentOffset.y);
         updateLastViewed({ progress: offsetY });
     };
