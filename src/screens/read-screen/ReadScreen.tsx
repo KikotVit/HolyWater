@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Header, Screen, Text } from '../../components';
 import { NavigationRef } from '../../navigation';
 import { useRootStore } from '../../stores';
@@ -10,16 +10,45 @@ const { height } = Dimensions.get('window');
 
 export const ReadScreen = () => {
     const insets = useSafeAreaInsets();
+    const scrollViewRef = useRef<ScrollView>(null);
 
     const [
         setCurrentRomanceItem,
         currentRomanceItem,
         updateLastViewed,
+        setLastViewed,
+        isNeedContinue,
+        lastViewed,
+        setIsNeedContinue,
     ] = useRootStore(state => [
         state.setCurrentRomanceItem,
         state.currentRomanceItem,
         state.updateLastViewed,
+        state.setLastViewed,
+        state.isNeedContinue,
+        state.lastViewed,
+        state.setIsNeedContinue,
     ]);
+
+    useEffect(() => {
+        if (!isNeedContinue) {
+            setLastViewed({
+                activeIndex: 0,
+                item: currentRomanceItem,
+                progress: 0,
+                type: 'lastViewed',
+            });
+        }
+        console.log('isNeedContinue: ', isNeedContinue);
+        if (isNeedContinue && scrollViewRef.current && lastViewed?.progress) {
+            scrollViewRef.current.scrollTo({ y: lastViewed.progress ?? 0, animated: false });
+            setIsNeedContinue(false);
+        }
+        
+        
+    }, []);
+    
+    console.log('lastViewed?.progress: ', lastViewed?.progress);
 
     const onLeftPress = () => {
         setCurrentRomanceItem();
@@ -38,9 +67,10 @@ export const ReadScreen = () => {
                 paddingBottom: 0,
             }}
         >
-            <Header leftIcon='arrowLeft' title={currentRomanceItem.title} onLeftPress={onLeftPress}/>
+            <Header leftIcon='arrowLeft' title={currentRomanceItem?.title} onLeftPress={onLeftPress}/>
             
             <ScrollView 
+                ref={scrollViewRef}
                 onScrollEndDrag={handleScroll}
                 decelerationRate={'fast'}
                 style={{
@@ -56,7 +86,7 @@ export const ReadScreen = () => {
                         fontSize: 18,
                         color: colors.background,
                     }}
-                    text={currentRomanceItem.text}
+                    text={currentRomanceItem?.text}
                 />
                 <View style={{ height : 100 }} />
             </ScrollView>

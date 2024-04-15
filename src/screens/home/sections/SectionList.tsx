@@ -4,90 +4,128 @@ import { FlatList, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } fr
 import { Icon, Text } from '../../../components';
 import { colors, spacing } from '../../../theme';
 import { IListItem } from '../../../stores/root.store.types';
+import { useRootStore } from '../../../stores';
+import { NavigationRef } from '../../../navigation';
 
 const LIST_ITEM_WIDTH = 120;
 const LIST_THUMBNAIL_HEIGHT = 150;
 
-const _renderItem = ({ item } : { item: IListItem }) => {
 
-    const getImage = () => item.imageUrl ? { uri: item.imageUrl } : require('../../../mock/images/book_fallback.png');
-
-    const handleItemPress = () => {
-
-    }
-
-    if (!item.isLocked) {
-        return (
-            <Pressable
-            onPress={() => handleItemPress()}
-                style={({ pressed }) => ({
-                    ...ROOT,
-                    transform: [{ scale: pressed ? 0.98 : 1 }],
-                })}
-            >
-                <View
-                    style={THUMBNAIL_CONTAINER}
-                >
-                    <Image
-                        source={getImage()}
-                        style={THUMBNAIL}
-                    />
-                </View>
-                <View
-                    style={{
-                        width: LIST_ITEM_WIDTH,
-                    }}
-                >
-                    <Text
-                        text={item.title}
-                    />
-                </View>
-            </Pressable>
-        );
-    } else {
-        return (
-            <View
-                style={ROOT}
-            >
-                <View
-                    style={{
-                        width: LIST_ITEM_WIDTH,
-                        height: LIST_THUMBNAIL_HEIGHT,
-                        borderRadius: spacing[2],
-                        overflow: 'hidden',
-                    }}
-                >
-                    <Icon
-                        icon='lock'
-                        containerStyle={LOCK_ICON_CONTAINER}
-                    />
-                    <Image
-                        source={getImage()}
-                        style={THUMBNAIL}
-                        blurRadius={30}
-                    />
-                </View>
-                <View
-                    style={{
-                        width: LIST_ITEM_WIDTH,
-                        flexDirection: 'column',
-                    }}
-                >
-                    <Text
-                        text={item.comingDate}
-                        style={COMING_TITLE}
-                    />
-                    <Text
-                        text={item.title}
-                        numberOfLines={2}
-                    />
-                </View>
-            </View>
-        );
-    }
-};
 
 export const SectionList = ({ content }: { content: IListItem[] }) => {
+
+    const [
+        setCurrentSeriesList,
+        setCurrentProgress,
+        setCurrentRomanceItem,
+    ] = useRootStore(state => [
+        state.setCurrentSeriesList,
+        state.setCurrentProgress,
+        state.setCurrentRomanceItem,
+    ]);
+
+    const _renderItem = ({ item } : { item: IListItem }) => {
+
+        const getImage = () => item.imageUrl ? { uri: item.imageUrl } : require('../../../mock/images/book_fallback.png');
+    
+        const handleItemPress = () => {
+            if (item.type === 'series') {
+                setCurrentSeriesList({
+                    imageUrl: item.imageUrl,
+                    subtitle: '',
+                    episodes: item.episodes ?? [],
+                    title: item.title,
+                    type: 'series',
+                });
+                setCurrentProgress(0);
+                NavigationRef.navigate('watchScreen');
+                return;
+            }
+            if (item.type === 'romance') {
+                //setCurrentRomance in store
+                setCurrentRomanceItem({
+                    imageUrl: item.imageUrl,
+                    subtitle: '',
+                    text: item.text ?? '',
+                    title: item.title,
+                    type: 'romance',
+                });
+                NavigationRef.navigate('readScreen');
+                return;
+            }
+        };
+    
+        if (!item.isLocked) {
+            return (
+                <Pressable
+                    onPress={() => handleItemPress()}
+                    style={({ pressed }) => ({
+                        ...ROOT,
+                        transform: [{ scale: pressed ? 0.98 : 1 }],
+                    })}
+                >
+                    <View
+                        style={THUMBNAIL_CONTAINER}
+                    >
+                        <Image
+                            source={getImage()}
+                            style={THUMBNAIL}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            width: LIST_ITEM_WIDTH,
+                        }}
+                    >
+                        <Text
+                            text={item.title}
+                        />
+                    </View>
+                </Pressable>
+            );
+        } else {
+            return (
+                <View
+                    style={ROOT}
+                >
+                    <View
+                        style={{
+                            width: LIST_ITEM_WIDTH,
+                            height: LIST_THUMBNAIL_HEIGHT,
+                            borderRadius: spacing[2],
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Icon
+                            icon='lock'
+                            containerStyle={LOCK_ICON_CONTAINER}
+                        />
+                        <Image
+                            source={getImage()}
+                            style={THUMBNAIL}
+                            blurRadius={30}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            width: LIST_ITEM_WIDTH,
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Text
+                            text={item.comingDate}
+                            style={COMING_TITLE}
+                        />
+                        <Text
+                            text={item.title}
+                            numberOfLines={2}
+                        />
+                    </View>
+                </View>
+            );
+        }
+    };
+
     return (
         <FlatList
             horizontal

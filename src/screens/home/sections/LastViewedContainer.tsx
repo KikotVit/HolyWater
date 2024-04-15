@@ -15,27 +15,50 @@ const GAP = spacing[2];
 
 export const LastViewedContainer = () => {
 
-    const [setCurrentSeriesList, setIsNeedContinue, lastViewed] = useRootStore(state => [state.setCurrentSeriesList, state.setIsNeedContinue, state.lastViewed]);
+    const [
+        setCurrentSeriesList,
+        setIsNeedContinue,
+        lastViewed,
+        setCurrentRomanceItem,
+    ] = useRootStore(state => [
+        state.setCurrentSeriesList,
+        state.setIsNeedContinue,
+        state.lastViewed,
+        state.setCurrentRomanceItem,
+    ]);
 
     const handlePress = () => {
+        if (!lastViewed) return;
+        setIsNeedContinue(true);
         if (lastViewed.item.type === 'series') {
             setCurrentSeriesList(lastViewed.item);
-            setIsNeedContinue(true);
+            
             NavigationRef.navigate('watchScreen');
             return;
         }
         if (lastViewed.item.type === 'romance') {
             //setCurrentRomance in store
-            console.log('romance');
+            setCurrentRomanceItem({
+                imageUrl: lastViewed.item.imageUrl,
+                subtitle: '',
+                text: lastViewed.item.text ?? '',
+                title: lastViewed.item.title,
+                type: 'romance',
+            });
+
             NavigationRef.navigate('readScreen');
             return;
         }
     };
 
     const getSubtitle= () => {
-        return lastViewed.item.type === 'series' 
-            ? lastViewed.item.episodes[lastViewed.activeIndex].title
-            : '';
+        try {
+            return lastViewed?.item.type === 'series' 
+                ? lastViewed.item.episodes[lastViewed.activeIndex].title
+                : '';
+        } catch (error) {
+            return '';
+        }
     };
 
     return (

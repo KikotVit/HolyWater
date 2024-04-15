@@ -93,6 +93,7 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
         state.lastViewed = { ...state.lastViewed, ...args };
     }),
     setCurrentRomanceItem: (romance) => set((state) => {
+        console.log('romance: ', romance);
         state.currentRomanceItem = romance;
     }),
     setHasHydrated: (isHydrated) => {
