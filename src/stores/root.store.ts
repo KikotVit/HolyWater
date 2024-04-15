@@ -45,7 +45,7 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
             const remoteConfigValues = remoteConfig().getAll();
             let res = [];
 
-            console.log('remoteConfigValues.mainContent && remoteConfigValues.mainContent._value: ', remoteConfigValues.mainContent && remoteConfigValues.mainContent._value);
+            console.log('remoteConfigValues: ', !!remoteConfigValues);
             if (remoteConfigValues.mainContent && remoteConfigValues.mainContent._value) {
                 res = JSON.parse(remoteConfigValues.mainContent._value);
             }
