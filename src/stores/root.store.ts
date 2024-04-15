@@ -14,6 +14,7 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     isHydrated: false,
     mainContent: [],
     currentSeriesItem: undefined,
+    currentRomanceItem: undefined,
     lastViewed: undefined,
     currentHeaderTitle: undefined,
     currentProgress: 0,
@@ -42,8 +43,6 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
             }
         }
 
-        console.log('mainContent: ', mainContent);
-
         set((state) => {
             state.mainContent = mainContent;
         });
@@ -63,22 +62,26 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     setCurrentSeriesList: (series?: ISeriesItem) => set((state) => {
         state.currentSeriesItem = series;
     }),
-    updateLastViewed: (args: {progress?: number, activeIndex?: number}) => set((state) => {
+    updateLastViewed: (args) => set((state) => {
         const lastViewedItem = get().lastViewed;
         state.lastViewed = { ...lastViewedItem, ...args };
     }),
-    setLastViewed: (args: ILastViewed) => set((state) => {
-        console.log('args: ', args);
+    setLastViewed: (args) => set((state) => {
         state.lastViewed = { ...state.lastViewed, ...args };
     }),
+    setCurrentRomanceItem: (romance) => set((state) => {
+        state.currentRomanceItem = romance;
+    }),
+    setHasHydrated: (isHydrated) => {
+        set((state) => {
+            state.isHydrated = isHydrated;
+        });
+    },
 }))), {
     name: 'root-store',
     storage: createJSONStorage(() => AsyncStorage),
-    onRehydrateStorage: () =>
-        produce((state) => {
-            if (state) {
-                state.isHydrated = true;
-            }
-        }),
+    onRehydrateStorage: () => state => {
+        state?.setHasHydrated(true);
+    },
     // partialize: (state) => ({add exception}),
 }));

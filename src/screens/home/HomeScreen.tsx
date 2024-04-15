@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dimensions, Platform, ScrollView, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Screen, Text } from '../../components';
+import { Screen } from '../../components';
 import { MainContentListContainer, MainCarousel, HomeHeader, LastViewedContainer } from '.';
 import { HEADER_HEIGHT } from '../../theme';
 import { useRootStore } from '../../stores';
@@ -37,9 +37,7 @@ export const HomeScreen = () => {
                         if (item.type === 'lastViewed') {
                             return <LastViewedContainer key={item.type + index} {...item.item} />;
                         }
-                    }) : (
-                        <Text text={'No content'} />
-                    )
+                    }) : <></>
                 }
                 <View style={{ height : HEADER_HEIGHT * 4 }} />
             </ScrollView>

@@ -88,17 +88,19 @@ export const ReelCard = ({ link, id, ViewableItem, index, title, onFinishPlaying
     
 
     const playbackStatusUpdate = playbackStatus => {
-        try {
-            const currentTime = Math.round(playbackStatus.currentTime);
-            const duration = Math.round(playbackStatus.seekableDuration);
-            if (currentTime)
-                if (duration) {
-                    const progress = (currentTime / duration) * 100;
-                    setCurrentProgress(progress);
-                    updateLastViewed({ progress });
-                }
-        } catch (error) {
-            console.error('playbackStatusUpdate error: ', error);
+        if (ViewableItem === id){
+            try {
+                const currentTime = Math.round(playbackStatus.currentTime);
+                const duration = Math.round(playbackStatus.seekableDuration);
+                if (currentTime)
+                    if (duration) {
+                        const progress = (currentTime / duration) * 100;
+                        setCurrentProgress(progress);
+                        updateLastViewed({ progress });
+                    }
+            } catch (error) {
+                console.error('playbackStatusUpdate error: ', error);
+            }
         }
     };
 

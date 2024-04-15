@@ -7,13 +7,21 @@ import { NavigationRef } from '../../../navigation';
 import { colors, spacing } from '../../../theme';
 import { Text } from '../../../components';
 import { useRootStore } from '../../../stores';
-import { IRomanceItem, ISeriesItem } from '../../../stores/root.store.types';
+import { ICommonContent, IRomanceItem, ISeriesItem } from '../../../stores/root.store.types';
 
 const { width } = Dimensions.get('screen');
 
 const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
 
-    const [setCurrentSeriesList, setCurrentProgress] = useRootStore(state => [state.setCurrentSeriesList, state.setCurrentProgress]);
+    const [
+        setCurrentSeriesList,
+        setCurrentProgress,
+        setCurrentRomanceItem,
+    ] = useRootStore(state => [
+        state.setCurrentSeriesList,
+        state.setCurrentProgress,
+        state.setCurrentRomanceItem,
+    ]);
 
     const onPress = () => {
         if (item.type === 'series') {
@@ -24,11 +32,14 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
         }
         if (item.type === 'romance') {
             //setCurrentRomance in store
-            console.log('romance');
+            setCurrentRomanceItem(item);
             NavigationRef.navigate('readScreen');
             return;
         }
     };
+
+    const getImage = () => item.imageUrl ? { uri: item.imageUrl } : require('../../../mock/images/carousel_fallback.png');
+
     return (
         <TouchableWithoutFeedback
             style={{
@@ -40,9 +51,7 @@ const MainCarouselItem = ({ item }: {item : (ISeriesItem | IRomanceItem)}) => {
             <View style={CAROUSEL_ITEM}>
                 <Image
                     style={[IMAGE, { resizeMode: item?.imageUrl  ? 'cover' : undefined, backgroundColor: colors.background }]}
-                    source={
-                        item.imageUrl
-                    }
+                    source={getImage()}
                 />
                 <View
                     style={{

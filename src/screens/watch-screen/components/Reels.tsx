@@ -15,12 +15,14 @@ export const Reels = () => {
         lastViewed,
         isNeedContinue,
         setCurrentProgress,
+        setCurrentDuration,
     ] = useRootStore(state => [
         state.currentSeriesItem,
         state.setLastViewed,
         state.lastViewed,
         state.isNeedContinue,
         state.setCurrentProgress,
+        state.setCurrentDuration,
     ]);
 
     const insets = useSafeAreaInsets();
@@ -51,7 +53,10 @@ export const Reels = () => {
     const onViewRef = useRef(viewableItems => {
         if (viewableItems?.viewableItems?.length > 0) {
             setViewableItem(viewableItems.viewableItems[0].item.id);
-            setCurrentProgress(0);
+            if (Platform.OS === 'android') {
+                setCurrentProgress(0);
+                setCurrentDuration(0);
+            }
         }
     });
 
@@ -80,7 +85,7 @@ export const Reels = () => {
             )}
             getItemLayout={(_data, index) => ({
                 length: height,
-                offset: (Platform.OS === 'ios' ? height - insets.bottom : height - 24)  * index,
+                offset: (Platform.OS === 'ios' ? height - insets.bottom : height)  * index,
                 index,
             })}
             pagingEnabled

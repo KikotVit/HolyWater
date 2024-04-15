@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MainNavParamList, RootNavigator } from './navigation/RootNavigator';
 import { NavigationContainerRef } from '@react-navigation/native';
 import { useRootStore } from './stores';
+import { useRootStoreZustand } from './stores/root.store';
 
 
 function App(): React.JSX.Element {
@@ -13,15 +14,13 @@ function App(): React.JSX.Element {
             (async() => await loadConfig())();
         }
     }, [isHydrated]);
+    console.log('isHydrated: ', isHydrated);
     
 
-    const navigationRef = useRef<NavigationContainerRef<MainNavParamList>>(null);
 
     return isHydrated ? (
 
-        <RootNavigator
-            ref={navigationRef}
-        />
+        <RootNavigator />
     ) : null;
 }
 

@@ -17,12 +17,6 @@ export const LastViewedContainer = () => {
 
     const [setCurrentSeriesList, setIsNeedContinue, lastViewed] = useRootStore(state => [state.setCurrentSeriesList, state.setIsNeedContinue, state.lastViewed]);
 
-    const getImage = () => {
-        return lastViewed.item.type === 'series'
-            ? require('../../../mock/images/mainBanner.png')
-            : require('../../../mock/images/book1.png');
-    };
-
     const handlePress = () => {
         if (lastViewed.item.type === 'series') {
             setCurrentSeriesList(lastViewed.item);
@@ -60,7 +54,9 @@ export const LastViewedContainer = () => {
                 >
                     <Image
                         style={THUMBNAIL}
-                        source={getImage()}
+                        source={{
+                            uri: lastViewed.item.imageUrl,
+                        }}
                     />
                     <View 
                         style={TITLE_CONTAINER}

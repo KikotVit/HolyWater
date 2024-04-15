@@ -39,7 +39,7 @@ export const Header = (props: IHeaderProps) => {
     
     return (
         <LinearGradient
-            start={{ x: 0.5, y: 0.6 }}
+            start={{ x: 0.5, y: 0.7 }}
             end={{ x: 0.5, y: 1 }}
             locations={[0, 1]}
             colors={colors.headerGradient}
@@ -87,7 +87,7 @@ export const Header = (props: IHeaderProps) => {
 
 const ICON_CONTAINER_WIDTH = 28;
 const HEADER_CONTAINER_PADDING = 16;
-const MAX_TITLE_WIDTH = width - ICON_CONTAINER_WIDTH * 2 - HEADER_CONTAINER_PADDING * 2;
+const MAX_TITLE_WIDTH = width - ICON_CONTAINER_WIDTH * 2 - HEADER_CONTAINER_PADDING * 2 - spacing[8];
 
 const TITLE: TextStyle = {
     fontFamily: 'Montserrat-Bold',

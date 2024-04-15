@@ -1,14 +1,17 @@
 
 import React from 'react';
-import { ITrendingItem } from '../../../mock/mockData';
 import { FlatList, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { colors, spacing } from '../../../theme';
+import { ITrendingItem } from '../../../stores/root.store.types';
 
 const LIST_ITEM_WIDTH = 120;
 const LIST_THUMBNAIL_HEIGHT = 150;
 
 const _renderItem = ({ item } : { item: ITrendingItem }) => {
+
+    const getImage = () => item.imageUrl ? { uri: item.imageUrl } : require('../../../mock/images/book_fallback.png');
+
     if (!item.isLocked) {
         return (
             <Pressable
@@ -21,7 +24,7 @@ const _renderItem = ({ item } : { item: ITrendingItem }) => {
                     style={THUMBNAIL_CONTAINER}
                 >
                     <Image
-                        source={item.imageUrl}
+                        source={getImage()}
                         style={THUMBNAIL}
                     />
                 </View>
@@ -54,9 +57,9 @@ const _renderItem = ({ item } : { item: ITrendingItem }) => {
                         containerStyle={LOCK_ICON_CONTAINER}
                     />
                     <Image
-                        source={item.imageUrl}
+                        source={getImage()}
                         style={THUMBNAIL}
-                        blurRadius={50}
+                        blurRadius={30}
                     />
                 </View>
                 <View

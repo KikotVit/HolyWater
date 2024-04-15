@@ -50,6 +50,7 @@ export interface IRootStore {
     isHydrated: boolean;
     mainContent: (ICommonContent | IListSection | ILastViewed)[];
     currentSeriesItem?: ISeriesItem;
+    currentRomanceItem?: IRomanceItem;
     currentHeaderTitle?: string;
     currentProgress: number;
     currentDuration: number;
@@ -63,8 +64,10 @@ export interface IRootStore {
     setCurrentHeaderTitle: (title: string) => void,
     setIsNeedContinue: (isNeed: boolean) => void,
     setIsPaused: (paused: boolean) => void,
+    setHasHydrated: (paused: boolean) => void,
     loadConfig: () => Promise<void>;
     setCurrentSeriesList: (list?: ISeriesItem) => void;
     updateLastViewed: (args: {progress?: number, activeIndex?: number}) => void;
     setLastViewed: (args: ILastViewed) => void;
+    setCurrentRomanceItem: (item?: IRomanceItem) => void;
 }
