@@ -35,29 +35,33 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
         let mainContent;
 
         try {
+            await remoteConfig().setConfigSettings({
+                isDeveloperModeEnabled: __DEV__,
+            });
             const isActivated = await remoteConfig().fetchAndActivate();
-            if (isActivated) {
-                console.log('Configs were retrieved from the backend and activated.');
-                const remoteConfigValues = remoteConfig().getAll();
-                let res = [];
+            console.log('isActivated: ', isActivated); //return false randomly https://github.com/invertase/react-native-firebase/issues/2767#issuecomment-587243587
+            // if (isActivated) { 
+            console.log('Configs were retrieved from the backend and activated.');
+            const remoteConfigValues = remoteConfig().getAll();
+            let res = [];
 
-                if (remoteConfigValues.mainContent && remoteConfigValues.mainContent._value) {
-                    res = JSON.parse(remoteConfigValues.mainContent._value)
-                }
-                if (lastViewed) {
-                    mainContent = R.insert(1, lastViewed, res);
-                } else {
-                    mainContent = res;
-                }
-        
-                set((state) => {
-                    state.mainContent = mainContent;
-                });
-            } else {
-                set((state) => {
-                    state.mainContent = [];
-                });
+            console.log('remoteConfigValues.mainContent && remoteConfigValues.mainContent._value: ', remoteConfigValues.mainContent && remoteConfigValues.mainContent._value);
+            if (remoteConfigValues.mainContent && remoteConfigValues.mainContent._value) {
+                res = JSON.parse(remoteConfigValues.mainContent._value);
             }
+            if (lastViewed) {
+                mainContent = R.insert(1, lastViewed, res);
+            } else {
+                mainContent = res;
+            }
+            set((state) => {
+                state.mainContent = mainContent;
+            });
+            // } else {
+            //     set((state) => {
+            //         state.mainContent = [];
+            //     });
+            // }
         } catch (error) {
             console.error('Error occurred while fetching and activating remote config:', error);
             set((state) => {
@@ -65,8 +69,6 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
                 // or state.mainContent = mockMainContent;
             });
         }
-
-       
     },
     setCurrentHeaderTitle: (title) => set((state) => {
         state.currentHeaderTitle = title;
@@ -90,10 +92,15 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
         }
     }),
     setLastViewed: (args) => set((state) => {
-        state.lastViewed = { ...state.lastViewed, ...args };
+        const lastViewedItem = get().lastViewed;
+        const mainContent = get().mainContent;
+        state.lastViewed = { ...lastViewedItem, ...args };
+        const isListViewedExist =  mainContent.find(el => el.type === 'lastViewed');
+        if (!isListViewedExist) {
+            state.mainContent = R.insert(1, { ...args }, mainContent);
+        }
     }),
     setCurrentRomanceItem: (romance) => set((state) => {
-        console.log('romance: ', romance);
         state.currentRomanceItem = romance;
     }),
     setHasHydrated: (isHydrated) => {
