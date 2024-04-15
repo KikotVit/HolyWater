@@ -3,10 +3,9 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { immer } from 'zustand/middleware/immer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ILastViewed, IRootStore, ISeriesItem } from './root.store.types';
+import { IRootStore, ISeriesItem } from './root.store.types';
 import { mockMainContent } from '../mock/mockData';
 import remoteConfig from '@react-native-firebase/remote-config';
-import { produce } from 'immer';
 import R from 'ramda';
 
 
@@ -63,6 +62,7 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
             console.error('Error occurred while fetching and activating remote config:', error);
             set((state) => {
                 state.mainContent = [];
+                // or state.mainContent = mockMainContent;
             });
         }
 
@@ -85,7 +85,9 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
     }),
     updateLastViewed: (args) => set((state) => {
         const lastViewedItem = get().lastViewed;
-        state.lastViewed = { ...lastViewedItem, ...args };
+        if (lastViewedItem) {
+            state.lastViewed = { ...lastViewedItem, ...args };
+        }
     }),
     setLastViewed: (args) => set((state) => {
         state.lastViewed = { ...state.lastViewed, ...args };
