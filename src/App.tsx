@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MainNavParamList, RootNavigator } from './navigation/RootNavigator';
-import { NavigationContainerRef } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { RootNavigator } from './navigation/RootNavigator';
 import { useRootStore } from './stores';
-import { useRootStoreZustand } from './stores/root.store';
 
 
 function App(): React.JSX.Element {
@@ -19,9 +17,8 @@ function App(): React.JSX.Element {
 
 
     return isHydrated ? (
-
         <RootNavigator />
-    ) : null;
+    ) : <></>;
 }
 
 export default App;

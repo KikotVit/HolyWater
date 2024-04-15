@@ -5,6 +5,7 @@ import { immer } from 'zustand/middleware/immer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ILastViewed, IRootStore, ISeriesItem } from './root.store.types';
 import { mockMainContent } from '../mock/mockData';
+import remoteConfig from '@react-native-firebase/remote-config';
 import { produce } from 'immer';
 import R from 'ramda';
 
@@ -32,20 +33,40 @@ export const useRootStoreZustand = createWithEqualityFn<IRootStore>()(persist(im
         console.log('loadConfig');
         const lastViewed = get().lastViewed;
 
-        const res = mockMainContent;
-
         let mainContent;
+
+        try {
+            const isActivated = await remoteConfig().fetchAndActivate();
+            if (isActivated) {
+                console.log('Configs were retrieved from the backend and activated.');
+                const remoteConfigValues = remoteConfig().getAll();
+                let res = [];
+
+                if (remoteConfigValues.mainContent && remoteConfigValues.mainContent._value) {
+                    res = JSON.parse(remoteConfigValues.mainContent._value)
+                }
+                if (lastViewed) {
+                    mainContent = R.insert(1, lastViewed, res);
+                } else {
+                    mainContent = res;
+                }
         
-        if (res) {
-            mainContent = res;
-            if (lastViewed) {
-                mainContent = R.insert(1, lastViewed, res);
+                set((state) => {
+                    state.mainContent = mainContent;
+                });
+            } else {
+                set((state) => {
+                    state.mainContent = [];
+                });
             }
+        } catch (error) {
+            console.error('Error occurred while fetching and activating remote config:', error);
+            set((state) => {
+                state.mainContent = [];
+            });
         }
 
-        set((state) => {
-            state.mainContent = mainContent;
-        });
+       
     },
     setCurrentHeaderTitle: (title) => set((state) => {
         state.currentHeaderTitle = title;

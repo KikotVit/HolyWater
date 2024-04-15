@@ -20,18 +20,20 @@ export interface IRomanceItem {
     text: string;
 }
 
-export interface ITrendingItem {
+export interface IListItem {
     title: string;
+    type: 'romance' | 'series',
     imageUrl: string;
     isLocked?: boolean;
     comingDate?: string;
-    link?: string;
+    text?: string;
+    episodes?: IEpisode[];
 }
 
 export interface IListSection {
     type: 'list';
     title: string;
-    items: ITrendingItem[];
+    items: IListItem[];
 }
 
 export interface ICommonContent {

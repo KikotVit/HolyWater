@@ -3,18 +3,23 @@ import React from 'react';
 import { FlatList, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { colors, spacing } from '../../../theme';
-import { ITrendingItem } from '../../../stores/root.store.types';
+import { IListItem } from '../../../stores/root.store.types';
 
 const LIST_ITEM_WIDTH = 120;
 const LIST_THUMBNAIL_HEIGHT = 150;
 
-const _renderItem = ({ item } : { item: ITrendingItem }) => {
+const _renderItem = ({ item } : { item: IListItem }) => {
 
     const getImage = () => item.imageUrl ? { uri: item.imageUrl } : require('../../../mock/images/book_fallback.png');
+
+    const handleItemPress = () => {
+
+    }
 
     if (!item.isLocked) {
         return (
             <Pressable
+            onPress={() => handleItemPress()}
                 style={({ pressed }) => ({
                     ...ROOT,
                     transform: [{ scale: pressed ? 0.98 : 1 }],
@@ -82,7 +87,7 @@ const _renderItem = ({ item } : { item: ITrendingItem }) => {
     }
 };
 
-export const SectionList = ({ content }: { content: ITrendingItem[] }) => {
+export const SectionList = ({ content }: { content: IListItem[] }) => {
     return (
         <FlatList
             horizontal
